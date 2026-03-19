@@ -1,4 +1,4 @@
-package com.healthapp.Nirvana.Model;
+package com.healthapp.Nirvana.User;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

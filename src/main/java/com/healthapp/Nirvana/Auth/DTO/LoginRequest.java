@@ -1,4 +1,4 @@
-package com.healthapp.Nirvana.Model;
+package com.healthapp.Nirvana.Auth.DTO;
 
 public class LoginRequest {
     private String username;

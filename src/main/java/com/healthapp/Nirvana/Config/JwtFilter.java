@@ -1,7 +1,7 @@
 package com.healthapp.Nirvana.Config;
 
-import com.healthapp.Nirvana.Service.JwtService;
-import com.healthapp.Nirvana.Service.MyUserDetailsService;
+import com.healthapp.Nirvana.Auth.JwtService;
+import com.healthapp.Nirvana.Auth.MyUserDetailsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;

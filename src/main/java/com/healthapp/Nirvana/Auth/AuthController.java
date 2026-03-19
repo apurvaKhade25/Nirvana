@@ -1,8 +1,7 @@
-package com.healthapp.Nirvana.Controller;
+package com.healthapp.Nirvana.Auth;
 
-import com.healthapp.Nirvana.Model.LoginRequest;
-import com.healthapp.Nirvana.Model.User;
-import com.healthapp.Nirvana.Service.UserService;
+import com.healthapp.Nirvana.Auth.DTO.LoginRequest;
+import com.healthapp.Nirvana.User.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

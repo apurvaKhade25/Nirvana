@@ -1,8 +1,8 @@
-package com.healthapp.Nirvana.Service;
+package com.healthapp.Nirvana.Auth;
 
-import com.healthapp.Nirvana.Model.LoginRequest;
-import com.healthapp.Nirvana.Model.User;
-import com.healthapp.Nirvana.Repo.UserRepo;
+import com.healthapp.Nirvana.Auth.DTO.LoginRequest;
+import com.healthapp.Nirvana.User.User;
+import com.healthapp.Nirvana.User.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

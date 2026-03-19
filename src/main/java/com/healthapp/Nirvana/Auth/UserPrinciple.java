@@ -1,5 +1,6 @@
-package com.healthapp.Nirvana.Model;
+package com.healthapp.Nirvana.Auth;
 
+import com.healthapp.Nirvana.User.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

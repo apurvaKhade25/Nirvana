@@ -1,8 +1,7 @@
-package com.healthapp.Nirvana.Service;
+package com.healthapp.Nirvana.Auth;
 
-import com.healthapp.Nirvana.Model.UserPrinciple;
-import com.healthapp.Nirvana.Model.User;
-import com.healthapp.Nirvana.Repo.UserRepo;
+import com.healthapp.Nirvana.User.User;
+import com.healthapp.Nirvana.User.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
