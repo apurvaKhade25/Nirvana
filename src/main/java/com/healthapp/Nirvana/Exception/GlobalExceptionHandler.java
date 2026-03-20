@@ -15,6 +15,6 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, String>> handleGeneral(Exception ex) {
-        return ResponseEntity.status(500).body(Map.of("error", "Something went wrong"));
+        return ResponseEntity.status(500).body(Map.of("error", ex.getMessage(),"type",ex.getClass().getName()));
     }
 }

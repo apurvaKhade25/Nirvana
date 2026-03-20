@@ -1,5 +1,6 @@
 package com.healthapp.Nirvana.Auth;
 
+import com.healthapp.Nirvana.Exception.ResourceNotFoundException;
 import com.healthapp.Nirvana.User.User;
 import com.healthapp.Nirvana.User.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,8 @@ public class MyUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepo.findByUsername((username));
+        User user = userRepo.findByUsername((username))
+                        .orElseThrow(()->new ResourceNotFoundException("User not found"));
         System.out.println("Searching user: " + username);
         if (user == null) {
             System.out.println("user not found");
