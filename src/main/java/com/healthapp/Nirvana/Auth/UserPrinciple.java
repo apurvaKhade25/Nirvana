@@ -27,7 +27,7 @@ public class UserPrinciple implements UserDetails {
 
     @Override
     public String getUsername() {
-        return user.getUsername();
+        return user.getEmail();
     }
 
     @Override
@@ -49,5 +49,4 @@ public class UserPrinciple implements UserDetails {
     public boolean isEnabled() {
         return UserDetails.super.isEnabled();
     }
-
 }

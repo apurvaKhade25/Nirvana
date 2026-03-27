@@ -43,12 +43,14 @@ public class UserService {
             Authentication authentication = authenticationManager.authenticate( //chcks username exists and password
                     // check
                     new UsernamePasswordAuthenticationToken(
-                            request.getUsername(),
+//                            request.getUsername(),
+                            request.getEmail(),
                             request.getPassword()
                     )
             );
             if (authentication.isAuthenticated()) { //if valid then generate token
-                return jwtService.generateToken(request.getUsername());
+//                return jwtService.generateToken(request.getUsername());
+                return jwtService.generateToken(request.getEmail());
 
             }
             return "fail";

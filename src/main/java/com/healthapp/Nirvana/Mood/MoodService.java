@@ -18,11 +18,11 @@ public class MoodService {
     private final MoodRepo moodRepo;
     private final UserRepo userRepo;
 
-    private final List<String> LABELS = List.of("", "awful", "bad", "okay", "good", "great");
+    private final List<String> LABELS = List.of("", "happy", "calm", "anxious", "sad", "angry", "excited", "tired", "grateful");
 
     public MoodService(MoodRepo moodRepo, UserRepo userRepo) {
         this.moodRepo = moodRepo;
-        this.userRepo=userRepo;
+        this.userRepo = userRepo;
     }
 
     //get mood history
