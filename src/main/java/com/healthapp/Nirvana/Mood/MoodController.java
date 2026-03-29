@@ -69,8 +69,7 @@ public class MoodController {
 
     // helper
     private Long getUserId(UserDetails userDetails) {
-//        return userRepo.findByUsername(userDetails.getUsername())
-            return userRepo.findByEmail(userDetails.getUsername())
+        return userRepo.findByEmail(userDetails.getUsername())
 
                 .orElseThrow(() -> new RuntimeException("User not found"))
                 .getId();

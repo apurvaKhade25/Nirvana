@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface MoodRepo extends JpaRepository<MoodEntry,Long> {
 
-    List <MoodEntry> findByUserIdOrderByLoggedAtDesc(Long UserId);
+    List <MoodEntry> findByUserIdOrderByLoggedAtAsc(Long UserId);
 
     List <MoodEntry> findByUserIdAndLoggedAtBetweenOrderByLoggedAtAsc(
             Long UserId, LocalDateTime from, LocalDateTime to

@@ -8,8 +8,8 @@ import java.time.LocalDateTime;
 public class MoodResponse {
 
     private Long id;
-    private Integer MoodScore;
-    private String MoodLabel;
-    private String Note;
+    private Integer moodScore;
+    private String moodLabel;
+    private String note;
     private LocalDateTime loggedAt;
 }

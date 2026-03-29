@@ -1,6 +1,7 @@
 package com.healthapp.Nirvana.Mood;
 
 
+import com.healthapp.Nirvana.Auth.MyUserDetailsService;
 import com.healthapp.Nirvana.Exception.ResourceNotFoundException;
 import com.healthapp.Nirvana.Mood.Dto.MoodRequest;
 import com.healthapp.Nirvana.Mood.Dto.MoodResponse;
@@ -27,7 +28,7 @@ public class MoodService {
 
     //get mood history
     public List<MoodResponse> getHistory(Long userId) {
-        return moodRepo.findByUserIdOrderByLoggedAtDesc(userId).stream().map(this::toResponse).toList();
+        return moodRepo.findByUserIdOrderByLoggedAtAsc(userId).stream().map(this::toResponse).toList();
     }
 
 
@@ -39,7 +40,7 @@ public class MoodService {
         MoodEntry entry = new MoodEntry();
         entry.setUser(user);
         entry.setMoodScore(request.getMoodScore());
-        entry.setMoodLabel(LABELS.get(request.getMoodScore()));
+        entry.setMoodLabel(request.getMoodLabel() != null? request.getMoodLabel(): LABELS.get(request.getMoodScore()));
         entry.setNote(request.getNote());
         entry.setLoggedAt(
                 request.getLoggedAt() != null ? request.getLoggedAt() : LocalDateTime.now()
