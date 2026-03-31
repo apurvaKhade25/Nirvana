@@ -61,6 +61,7 @@ public class SecurityConfig {
                         .requestMatchers("/auth/login", "/auth/register").permitAll()
                         .requestMatchers("/mood/**").authenticated()
                         .requestMatchers("/journal/**").authenticated()
+                        .requestMatchers("/wellness/**").authenticated()
                         .anyRequest().authenticated()
                 )
                 .authenticationProvider(authenticationProvider());
