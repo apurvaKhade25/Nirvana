@@ -62,6 +62,7 @@ public class SecurityConfig {
                         .requestMatchers("/mood/**").authenticated()
                         .requestMatchers("/journal/**").authenticated()
                         .requestMatchers("/wellness/**").authenticated()
+                        .requestMatchers("/chatbot/**").authenticated()
                         .anyRequest().authenticated()
                 )
                 .authenticationProvider(authenticationProvider());

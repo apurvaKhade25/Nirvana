@@ -9,6 +9,6 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class GeminiContent {
+public class GeminiContent {                    
     private List<GeminiPart> parts;
 }
