@@ -47,9 +47,20 @@ public class ChatbotService {
         String recentJournal = journalEntries.isEmpty() ? "none" : journalEntries.get(0).getContent();
 
         //build ai context
-        String context = String.format("You are Nirvana, a warm and empathetic AI wellness companion. " +
-                "Respond in a short, supportive, human way. Avoid long analysis."+
-                "Be supportive, concise, and human. Never give medical advice.", avg, topMood, recentJournal);
+        String context = String.format("You are Nirvana, a warm and caring AI companion — like a close friend, not a therapist.\n" +
+                "User's mood average: %.1f/10. Most recent mood: %s.\n" +
+                "Recent journal: \"%s\".\n\n" +
+                "STRICT RULES:\n" +
+                "- Keep replies SHORT — 2 to 4 sentences maximum\n" +
+                "- Be warm, casual, and human — like texting a supportive friend\n" +
+                "- NEVER use clinical words like 'metacognitive', 'distress', 'emotional arc'\n" +
+                "- NEVER write long lists or bullet points\n" +
+                "- Celebrate wins with the user, don't analyse them\n" +
+                "- If someone says something good, just react naturally — 'That's amazing!!'\n" +
+                "- Match the user's energy — if they're casual, be casual\n" +
+                "- Never give medical advice\n" +
+                "IMPORTANT: Always talk DIRECTLY to the user. Say 'you' not 'the user'.\n", avg, topMood,
+                recentJournal);
 
         StringBuilder fullPrompt = new StringBuilder(context);
 
@@ -67,7 +78,7 @@ public class ChatbotService {
         }
         String aireply = aiService.generateInsight(fullPrompt.toString());
 
-        User user = userRepo.findById(userId).orElseThrow(()->new RuntimeException("User not found"));
+        User user = userRepo.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
         System.out.println("USER ID = " + userId);
         //save user message
         ChatEntry userMsg = new ChatEntry();
@@ -95,12 +106,13 @@ public class ChatbotService {
 
     }
 
-    public List <ChatbotResponse> getHistory(Long userId){
-        List<ChatEntry>chats=
+    public List<ChatbotResponse> getHistory(Long userId) {
+        List<ChatEntry> chats =
                 chatRepo.findTop10ByUserIdOrderBySentAtDesc(userId);
         return chats.stream().map(chat -> {
             ChatbotResponse res = new ChatbotResponse();
             res.setMessage(chat.getMessage());
+            res.setRole(chat.getRole());
             res.setSentAt(chat.getSentAt());
             return res;
         }).toList();
