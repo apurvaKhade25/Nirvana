@@ -44,10 +44,20 @@ public class JwtFilter extends OncePerRequestFilter {
         //check if header contains bearer token
         if (Authheader != null && Authheader.startsWith("Bearer ")) {
             token = Authheader.substring(7);
-            username = jwtService.extractUsername(token);
+            if (token == null || token.trim().isEmpty() || !token.contains(".")) {
+                filterChain.doFilter(request, response);
+                return;
+            }
+            try{
+                username = jwtService.extractUsername(token);
+            } catch (Exception e) {
+                System.out.println("Invalid jwt token"+e.getMessage());
+                filterChain.doFilter(request,response);
+                return;
+            }
         }
 
-        //if user exists but not authenticated
+//        if user exists but not authenticated
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 

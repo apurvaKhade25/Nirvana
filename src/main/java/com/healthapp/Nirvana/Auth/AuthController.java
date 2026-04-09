@@ -15,9 +15,18 @@ public class AuthController {
     @Autowired
     private UserService userservice;
 
+    @Autowired
+    private JwtService jwtService;
+
     @PostMapping("/register")
-    public User register(@RequestBody User user) {
-        return userservice.register(user);
+    public String register(@RequestBody User user) {
+        //create new user
+        User newUser=userservice.register(user);
+
+        //token for new user
+        String token = jwtService.generateToken(newUser.getEmail());
+        return token;
+//        return userservice.register(user);
     }
 
     @PostMapping("/login")
