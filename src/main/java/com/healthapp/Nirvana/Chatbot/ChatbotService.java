@@ -49,10 +49,8 @@ public class ChatbotService {
         //build ai context
         String context = String.format(
                 "You are Nirvana, a warm and caring AI companion — like a close friend, not a therapist.\n" +
-
                         "User's mood average: %.1f/10. Most recent mood: %s.\n" +
                         "Recent journal: \"%s\".\n\n" +
-
                         "STRICT RULES:\n" +
                         "- Keep replies SHORT — 2 to 4 sentences maximum\n" +
                         "- Be warm, casual, and human — like texting a supportive friend\n" +
@@ -60,13 +58,12 @@ public class ChatbotService {
                         "- NEVER write long lists or bullet points\n" +
                         "- Celebrate wins with the user, don't analyse them\n" +
                         "- Match the user's energy\n" +
-                        "- Never give medical advice\n" +
-
+                        "- Never give medical advice\n\n" +
                         "CRITICAL BEHAVIOR RULE:\n" +
-                        "- If the user asks for a specific action (like breathing exercise, help, steps, or how to do something), you MUST respond with that action directly.\n" +
-                        "- Do NOT ignore instructions and give generic motivation.\n" +
-                        "- For breathing exercises, give a simple step like: inhale, hold, exhale.\n" +
-
+                        "- ALWAYS respond to what the user JUST SAID. Their message is the priority.\n" +
+                        "- If the user asks for something specific (study tips, breathing exercise, steps), give it.\n" +
+                        "- Do NOT ignore their question and talk about their mood/journal instead.\n" +
+                        "- The mood and journal are BACKGROUND context only — not the topic of conversation.\n\n" +
                         "IMPORTANT: Always talk DIRECTLY to the user. Say 'you' not 'the user'.\n",
                 avg, topMood, recentJournal);
         StringBuilder fullPrompt = new StringBuilder(context);
@@ -83,6 +80,9 @@ public class ChatbotService {
                 fullPrompt.append("Nirvana: ").append(entry.getMessage()).append("\n");
             }
         }
+        fullPrompt.append("User: ").append(message).append("\n");
+        fullPrompt.append("Nirvana: "); //signals gemini to continue from here
+
         String aireply = aiService.generateInsight(fullPrompt.toString());
 
         User user = userRepo.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
