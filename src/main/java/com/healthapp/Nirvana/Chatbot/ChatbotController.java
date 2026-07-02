@@ -4,6 +4,7 @@ import com.healthapp.Nirvana.Chatbot.Dto.ChatbotRequest;
 import com.healthapp.Nirvana.Chatbot.Dto.ChatbotResponse;
 import com.healthapp.Nirvana.User.UserRepo;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +24,7 @@ public class ChatbotController {
         this.userRepo = userRepo;
     }
 
+    @PreAuthorize("hasRole('PATIENT')")
     @PostMapping
     public ResponseEntity<ChatbotResponse> chat(@RequestBody ChatbotRequest chatbotRequest,
                                                 @AuthenticationPrincipal UserDetails userDetails) {
@@ -30,7 +32,7 @@ public class ChatbotController {
         return ResponseEntity.ok(chatbotService.chatbotResponse(userId, chatbotRequest.getMessage()));
     }
 
-
+    @PreAuthorize("hasRole('PATIENT')")
     @GetMapping("/history")
     public ResponseEntity<List<ChatbotResponse>> getHistory(@AuthenticationPrincipal UserDetails userDetails) {
         Long userId = getUserId(userDetails);

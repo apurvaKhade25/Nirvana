@@ -16,6 +16,11 @@ public class User {
     private Long id;
     private String username;
     private String password; //will be bcrypt
-    private String role;//User or Admin
+
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Role role;//patient or doctor
+    @Column(unique = true, nullable = false)
     private String email;
 }

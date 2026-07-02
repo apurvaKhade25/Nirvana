@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface JournalRepo extends JpaRepository<JournalEntry,Long> {
 
-    List <JournalEntry> findByUserIdOrderByCreatedAtDesc(Long userId);
+    List <JournalEntry> findByUserIdOrderByCreatedAtAsc(Long userId);
 
     Optional <JournalEntry> findByIdAndUserId(Long id, Long userId);
 

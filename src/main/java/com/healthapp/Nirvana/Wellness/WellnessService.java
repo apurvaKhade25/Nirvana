@@ -66,7 +66,7 @@ public class WellnessService {
 
 
         //extracts journalentries
-        List<JournalEntry> journalEntries = journalRepo.findByUserIdOrderByCreatedAtDesc(userId);
+        List<JournalEntry> journalEntries = journalRepo.findByUserIdOrderByCreatedAtAsc(userId);
         int journalCount = journalEntries.size();         //total entries
 
 

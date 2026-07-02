@@ -5,13 +5,14 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.stereotype.Service;
+import com.healthapp.Nirvana.User.Role;
 
 import java.security.Key;
 import java.util.Date;
 
 @Service
 public class JwtService {
-    private String secretkey = "my-super-secure-secret-key-for-ecommerce-application-123456";
+    private String secretkey = "my-super-secure-secret-key-for-nirvana-application-123456";
 
     private Key getSignKey() {
 //        byte[] keybytes = secretkey.getBytes();
@@ -19,9 +20,10 @@ public class JwtService {
         return Keys.hmacShaKeyFor(secretkey.getBytes());
     }
 
-    public String generateToken(String username) {
+    public String generateToken(String username, Role role) {
         return Jwts.builder()
                 .setSubject(username)
+                .claim("role", role.name())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 60 * 60 * 30 * 1000))
                 .signWith(getSignKey(), SignatureAlgorithm.HS256)
@@ -31,6 +33,9 @@ public class JwtService {
     public String extractUsername(String token) {
         return extractAllClaims(token).getSubject();
 
+    }
+    public String extractRole(String token) {
+        return extractAllClaims(token).get("role", String.class);
     }
 
     public boolean validateToken(String token, String username) {

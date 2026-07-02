@@ -36,7 +36,7 @@ public class JournalService {
     }
 
     public List<JournalResponse> journalHistory(Long userId){
-        return journalRepo.findByUserIdOrderByCreatedAtDesc(userId).stream().map(this::toresponse).toList();
+        return journalRepo.findByUserIdOrderByCreatedAtAsc(userId).stream().map(this::toresponse).toList();
     }
 
 

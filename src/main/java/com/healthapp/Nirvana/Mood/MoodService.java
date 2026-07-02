@@ -1,13 +1,11 @@
 package com.healthapp.Nirvana.Mood;
 
 
-import com.healthapp.Nirvana.Auth.MyUserDetailsService;
 import com.healthapp.Nirvana.Exception.ResourceNotFoundException;
 import com.healthapp.Nirvana.Mood.Dto.MoodRequest;
 import com.healthapp.Nirvana.Mood.Dto.MoodResponse;
 import com.healthapp.Nirvana.User.User;
 import com.healthapp.Nirvana.User.UserRepo;
-import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;

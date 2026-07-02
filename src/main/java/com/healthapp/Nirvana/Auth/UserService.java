@@ -32,31 +32,23 @@ public class UserService {
     public User register(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));//encode password
         System.out.println(passwordEncoder.encode(user.getPassword()));
-        user.setRole("USER"); //default set role
         userRepo.save(user); //save user in db
         return user;
     }
 
     //login
-    public String verify(LoginRequest request) {
+    public String login(LoginRequest loginRequest) {
         try {
-            Authentication authentication = authenticationManager.authenticate( //chcks username exists and password
-                    // check
-                    new UsernamePasswordAuthenticationToken(
-//                            request.getUsername(),
-                            request.getEmail(),
-                            request.getPassword()
-                    )
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword())
             );
-            if (authentication.isAuthenticated()) { //if valid then generate token
-//                return jwtService.generateToken(request.getUsername());
-                return jwtService.generateToken(request.getEmail());
-
+            if (authentication.isAuthenticated()) {
+                User user = userRepo.findByEmail(loginRequest.getEmail()).orElseThrow(() -> new RuntimeException("User not found"));
+                return jwtService.generateToken(user.getEmail(), user.getRole());
             }
             return "fail";
-
         } catch (AuthenticationException e) {
-            return "invalid username and password";
+            throw new RuntimeException("Invalid username or password");
         }
     }
 }

@@ -43,7 +43,7 @@ public class ChatbotService {
         String topMood = moods.isEmpty() ? "unknown" : moods.get(0).getMoodLabel();
 
         //get journal summary
-        List<JournalEntry> journalEntries = journalRepo.findByUserIdOrderByCreatedAtDesc(userId);
+        List<JournalEntry> journalEntries = journalRepo.findByUserIdOrderByCreatedAtAsc(userId);
         String recentJournal = journalEntries.isEmpty() ? "none" : journalEntries.get(0).getContent();
 
         //build ai context

@@ -48,6 +48,7 @@ public class AiService {
 
             System.out.println(response.getBody()); //error in terminal
             System.out.println("API KEY: " + apiKey);
+
             // Step 5 — extract text from response
             String rawText = response.getBody().getFirstText();
 
