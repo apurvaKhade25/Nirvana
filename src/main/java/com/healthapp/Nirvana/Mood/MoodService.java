@@ -1,6 +1,8 @@
 package com.healthapp.Nirvana.Mood;
 
 
+import com.healthapp.Nirvana.Auth.AuthenticatedUserProvider;
+import com.healthapp.Nirvana.Consent.ConsentGuard;
 import com.healthapp.Nirvana.Exception.ResourceNotFoundException;
 import com.healthapp.Nirvana.Mood.Dto.MoodRequest;
 import com.healthapp.Nirvana.Mood.Dto.MoodResponse;
@@ -16,13 +18,18 @@ public class MoodService {
 
     private final MoodRepo moodRepo;
     private final UserRepo userRepo;
+    private final AuthenticatedUserProvider authenticatedUserProvider;
+    private final ConsentGuard consentGuard;
 
-    private final List<String> LABELS = List.of("", "happy", "calm", "anxious", "sad", "angry", "excited", "tired", "grateful");
-
-    public MoodService(MoodRepo moodRepo, UserRepo userRepo) {
+    public MoodService(MoodRepo moodRepo, UserRepo userRepo, AuthenticatedUserProvider authenticatedUserProvider, ConsentGuard consentGuard) {
         this.moodRepo = moodRepo;
         this.userRepo = userRepo;
+        this.authenticatedUserProvider = authenticatedUserProvider;
+        this.consentGuard = consentGuard;
     }
+
+
+    private final List<String> LABELS = List.of("", "happy", "calm", "anxious", "sad", "angry", "excited", "tired", "grateful");
 
     //get mood history
     public List<MoodResponse> getHistory(Long userId) {
@@ -60,6 +67,15 @@ public class MoodService {
             throw new RuntimeException("You can only delete your own entries");
         }
         moodRepo.delete(entry);
+    }
+
+    // doctor can get mood history of a patient
+    public List<MoodResponse> getPatientHistoryForDoctor(Long patientId) {
+        Long doctorId = authenticatedUserProvider.getAuthenticatedUserId();
+        User patient = userRepo.findById(patientId)
+                .orElseThrow(() -> new ResourceNotFoundException("Patient not found"));
+        consentGuard.verify(doctorId, patientId);
+        return moodRepo.findByUserIdOrderByLoggedAtAsc(patientId).stream().map(this::toResponse).toList();
     }
 
     private MoodResponse toResponse(MoodEntry e) {

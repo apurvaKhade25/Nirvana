@@ -1,5 +1,7 @@
 package com.healthapp.Nirvana.Journal;
 
+import com.healthapp.Nirvana.Auth.AuthenticatedUserProvider;
+import com.healthapp.Nirvana.Consent.ConsentGuard;
 import com.healthapp.Nirvana.Journal.Dto.JournalRequest;
 import com.healthapp.Nirvana.Journal.Dto.JournalResponse;
 import com.healthapp.Nirvana.Mood.Dto.MoodResponse;
@@ -16,10 +18,14 @@ public class JournalService {
 
     public final JournalRepo journalRepo;
     public final UserRepo userRepo;
+    public final ConsentGuard consentGuard;
+    public final AuthenticatedUserProvider authenticatedUserProvider;
 
-    public JournalService(JournalRepo journalRepo, UserRepo userRepo) {
+    public JournalService(JournalRepo journalRepo, UserRepo userRepo, ConsentGuard consentGuard, AuthenticatedUserProvider authenticatedUserProvider) {
         this.journalRepo = journalRepo;
         this.userRepo = userRepo;
+        this.consentGuard = consentGuard;
+        this.authenticatedUserProvider = authenticatedUserProvider;
     }
 
 
@@ -39,6 +45,13 @@ public class JournalService {
         return journalRepo.findByUserIdOrderByCreatedAtAsc(userId).stream().map(this::toresponse).toList();
     }
 
+    // get joural history for doctor with consent
+    public List<JournalResponse> getJournalHistoryForDoctor(Long patientId) {
+        Long doctorId = authenticatedUserProvider.getAuthenticatedUserId();
+        User patient = userRepo.findById(patientId).orElseThrow(() -> new RuntimeException("Patient not found"));
+        consentGuard.verify(doctorId, patientId); // Check if the doctor has consent
+        return journalRepo.findByUserIdOrderByCreatedAtAsc(patientId).stream().map(this::toresponse).toList();
+    }
 
     private JournalResponse toresponse(JournalEntry e) {
         JournalResponse r = new JournalResponse();

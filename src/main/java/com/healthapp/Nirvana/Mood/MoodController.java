@@ -8,15 +8,12 @@ import jakarta.validation.Valid;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import com.healthapp.Nirvana.Auth.AuthenticatedUserProvider;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -78,6 +75,17 @@ public class MoodController {
         moodService.deleteMood(userId, id);
         return ResponseEntity.ok("Mood entry deleted");
     }
+
+    // GET /mood/doctor/{patientId}/history
+    @PreAuthorize("hasRole('DOCTOR')")
+    @GetMapping("/doctor/{patientId}/history")
+    public ResponseEntity<List<MoodResponse>> getPatientHistoryForDoctor(
+            @PathVariable Long patientId) {
+        Long doctorId = authenticatedUserProvider.getAuthenticatedUserId();
+        // Here you would check if the doctor has consent to view the patient's mood history
+        return ResponseEntity.ok(moodService.getPatientHistoryForDoctor(patientId));
+    }
+
 
     // helper
     private Long getUserId(UserDetails userDetails) {

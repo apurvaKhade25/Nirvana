@@ -58,6 +58,15 @@ public class JournalController {
         return ResponseEntity.ok("Doctor access confirmed");
     }
 
+    // GET /journal/doctor/history/{patientId}
+    @PreAuthorize("hasRole('DOCTOR')")
+    @GetMapping("/doctor/{patientId}/history")
+    public ResponseEntity<List<JournalResponse>> getJournalHistoryForDoctor(
+            @PathVariable Long patientId) {
+        Long doctorId = authenticatedUserProvider.getAuthenticatedUserId();
+        return ResponseEntity.ok(journalService.getJournalHistoryForDoctor(patientId));
+    }
+
     private Long getUserId (UserDetails userDetails){
         return userRepo.findByEmail(userDetails.getUsername())
                 .orElseThrow(() -> new RuntimeException("User Not Found"))
