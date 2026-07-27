@@ -8,7 +8,12 @@ import com.healthapp.Nirvana.Mood.Dto.MoodRequest;
 import com.healthapp.Nirvana.Mood.Dto.MoodResponse;
 import com.healthapp.Nirvana.User.User;
 import com.healthapp.Nirvana.User.UserRepo;
+import org.springframework.http.HttpStatus;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
 
 import java.time.LocalDateTime;
 import java.util.List;

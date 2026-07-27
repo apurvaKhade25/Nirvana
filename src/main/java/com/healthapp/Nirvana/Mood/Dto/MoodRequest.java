@@ -12,15 +12,15 @@ import java.time.LocalTime;
 
 public class MoodRequest {
 
-    public String MoodLabel;
+    public String moodLabel;
 
     @NotNull(message = "Mood cannot be empty")
     @Min(value = 1, message = "Minimum score is 1")
     @Max(value = 10, message = "Maximum score is 10")
-    private Integer MoodScore;
+    private Integer moodScore;
 
-    private String Note;
-    private LocalDateTime LoggedAt;
+    private String note;
+    private LocalDateTime loggedAt;
 }
 
 

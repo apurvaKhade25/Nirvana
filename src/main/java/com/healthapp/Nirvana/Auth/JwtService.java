@@ -4,6 +4,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import com.healthapp.Nirvana.User.Role;
 
@@ -12,11 +13,10 @@ import java.util.Date;
 
 @Service
 public class JwtService {
-    private String secretkey = "my-super-secure-secret-key-for-nirvana-application-123456";
+    @Value("${jwt.secret}")
+    private String secretkey;
 
     private Key getSignKey() {
-//        byte[] keybytes = secretkey.getBytes();
-//        return Keys.hmacShaKeyFor(keybytes);
         return Keys.hmacShaKeyFor(secretkey.getBytes());
     }
 

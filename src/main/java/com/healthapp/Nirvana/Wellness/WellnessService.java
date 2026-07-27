@@ -72,7 +72,17 @@ public class WellnessService {
 
         //build prompt for gemini
         String prompt = String.format(
-                "User's wellness data: average mood %.1f/10, " +
+                "Respond ONLY with a valid JSON object.\n" +
+                        "Do not include any explanation, markdown, or text outside the JSON.\n" +
+                        "If you cannot generate insights, still return the JSON with empty strings.\n" +
+                        "\n" +
+                        "Required format:\n" +
+                        "{\n" +
+                        "  \"aiInsight\": \"<one sentence insight>\",\n" +
+                        "  \"emotions\": [\"<emotion1>\", \"<emotion2>\"],\n" +
+                        "  \"recommendations\": [\"<action1>\", \"<action2>\"]\n" +
+                        "}" +
+                        "User's wellness data: average mood %.1f/10, " +
                         "most frequent emotion: %s, total mood logs: %d, journal entries: %d. " +
                         "Return ONLY a valid JSON object with no markdown, no backticks, exactly like this: " +
                         "{" +
@@ -93,14 +103,14 @@ public class WellnessService {
 
 
         WellnessResponse response = new WellnessResponse();
-        response.setAvgMoodScore((double)Math.round(avg * 10) / 10);
+        response.setAvgMoodScore((double) Math.round(avg * 10) / 10);
         response.setAvgFrequentMood(mostFrequent);
         response.setTotalJournalEntries(journalCount);
         response.setTotalMoodLogs(moods.size());
 
         // If best/worst exist, extract just the date part from the timestamp
-        response.setBestday(best!=null ? best.getLoggedAt().toLocalDate().toString():"NA" );
-        response.setWorstday(worst!=null ? worst.getLoggedAt().toLocalDate().toString():"NA");
+        response.setBestday(best != null ? best.getLoggedAt().toLocalDate().toString() : "NA");
+        response.setWorstday(worst != null ? worst.getLoggedAt().toLocalDate().toString() : "NA");
 
 
         // With this — parse structured JSON from Gemini

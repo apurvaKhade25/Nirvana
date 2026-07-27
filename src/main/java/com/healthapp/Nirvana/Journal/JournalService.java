@@ -53,6 +53,16 @@ public class JournalService {
         return journalRepo.findByUserIdOrderByCreatedAtAsc(patientId).stream().map(this::toresponse).toList();
     }
 
+    // delete journal entry
+    public void deleteJournalEntry(Long userId, Long journalId) {
+        JournalEntry journalEntry = journalRepo.findById(journalId)
+                .orElseThrow(() -> new RuntimeException("Journal entry not found"));
+        if (!journalEntry.getUser().getId().equals(userId)) {
+            throw new RuntimeException("User not authorized to delete this journal entry");
+        }
+        journalRepo.delete(journalEntry);
+    }
+
     private JournalResponse toresponse(JournalEntry e) {
         JournalResponse r = new JournalResponse();
         r.setId(e.getId());

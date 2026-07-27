@@ -42,8 +42,8 @@ public class MoodController {
     }
 
     // POST /mood
+    @PostMapping("/log")
     @PreAuthorize("hasRole('PATIENT')")
-    @PostMapping
     public ResponseEntity<MoodResponse> logMood(
             @RequestBody @Valid MoodRequest request,        // receives and validates json
             @AuthenticationPrincipal UserDetails userDetails) {
@@ -56,8 +56,8 @@ public class MoodController {
     @PreAuthorize("hasRole('PATIENT')")
     @GetMapping("/range")
     public ResponseEntity<List<MoodResponse>> getRange(
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDate from,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDate to,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to,
             @AuthenticationPrincipal UserDetails userDetails) {
 
         Long userId = getUserId(userDetails);

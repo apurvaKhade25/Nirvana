@@ -1,12 +1,14 @@
 package com.healthapp.Nirvana.Consent;
 
 import com.healthapp.Nirvana.Auth.AuthenticatedUserProvider;
-import com.healthapp.Nirvana.Consent.Dto.Consent;
+import com.healthapp.Nirvana.Consent.Dto.DoctorSummary;
+import com.healthapp.Nirvana.Consent.Dto.PatientSummary;
 import com.healthapp.Nirvana.User.User;
 import com.healthapp.Nirvana.User.UserRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -24,6 +26,7 @@ public class ConsentService {
         User doctor = userRepo.findByEmail(doctorEmail).orElseThrow(() -> new RuntimeException("Doctor not found"));
 
         Optional<Consent> existingConsent = consentRepo.findBydoctorIdAndPatientId(doctor.getId(), patientId);
+
 
         if (existingConsent.isPresent()) {
             Consent consent = existingConsent.get();
@@ -62,6 +65,26 @@ public class ConsentService {
         consentRepo.save(consent);
     }
 
+    // Method to check if a doctor has consent from a patient
+    public List<PatientSummary> getPatientSummaries() {
+        Long authenticatedDoctorId = authenticatedUserProvider.getAuthenticatedUserId();
+        List <Consent> consents = consentRepo.findByDoctorIdAndStatus(authenticatedDoctorId, ConsentStatus.GRANTED);
+        return consents.stream().map(consent -> {
+            User patient = userRepo.findById(consent.getPatientId()).orElseThrow(() -> new RuntimeException("Patient not found"));
+            return new PatientSummary(consent.getId(), patient.getId(), patient.getUsername(), patient.getEmail(),
+                    consent.getId());
+        }).toList();
+    }
 
+    // Method to see all doctors a patient has given consent to
+    public List<DoctorSummary> getDoctorSummaries() {
+        Long authenticatedPatientId = authenticatedUserProvider.getAuthenticatedUserId();
+        List <Consent> consents = consentRepo.findByPatientIdAndStatus(authenticatedPatientId, ConsentStatus.GRANTED);
+        return consents.stream().map(consent -> {
+            User doctor = userRepo.findById(consent.getDoctorId()).orElseThrow(() -> new RuntimeException("Doctor not found"));
+            return new DoctorSummary(consent.getId(), doctor.getId(), doctor.getUsername(), doctor.getEmail());
+        }).toList();
+
+    }
 
 }

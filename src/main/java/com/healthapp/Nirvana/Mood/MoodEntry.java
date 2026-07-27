@@ -16,7 +16,7 @@ import java.time.LocalTime;
 public class MoodEntry {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
+    private Long id;
 
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -24,12 +24,12 @@ public class MoodEntry {
     private User user;
 
     @Column(nullable = false)       //awful=1 great=5
-    private Integer MoodScore;
+    private Integer moodScore;
 
     private String moodLabel;      // "awful","bad","okay","good","great"
 
     @Column(columnDefinition = "Text")
-    private  String Note;
+    private  String note;
 
     private LocalDateTime loggedAt;
 

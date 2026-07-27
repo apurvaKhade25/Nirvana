@@ -1,11 +1,8 @@
 package com.healthapp.Nirvana.Consent;
 
-import com.healthapp.Nirvana.Consent.Dto.Consent;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Component;
-
-import java.util.logging.Logger;
 
 
 @Component

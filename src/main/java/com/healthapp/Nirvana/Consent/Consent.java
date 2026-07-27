@@ -1,6 +1,5 @@
-package com.healthapp.Nirvana.Consent.Dto;
+package com.healthapp.Nirvana.Consent;
 
-import com.healthapp.Nirvana.Consent.ConsentStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -14,7 +13,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class Consent {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long patientId;
     private Long doctorId; // resolved from email at invite time

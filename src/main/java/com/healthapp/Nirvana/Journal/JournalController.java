@@ -67,6 +67,15 @@ public class JournalController {
         return ResponseEntity.ok(journalService.getJournalHistoryForDoctor(patientId));
     }
 
+    @PreAuthorize("hasRole('PATIENT')")
+    @DeleteMapping("/{journalId}")
+    public ResponseEntity<String> deleteJournalEntry(@PathVariable Long journalId,
+                                                @AuthenticationPrincipal UserDetails userDetails) {
+        Long userId = getUserId(userDetails);
+        journalService.deleteJournalEntry(userId, journalId);
+        return ResponseEntity.ok("Journal entry deleted successfully");
+    }
+
     private Long getUserId (UserDetails userDetails){
         return userRepo.findByEmail(userDetails.getUsername())
                 .orElseThrow(() -> new RuntimeException("User Not Found"))
