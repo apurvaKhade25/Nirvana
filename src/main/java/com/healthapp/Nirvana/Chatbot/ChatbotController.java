@@ -36,7 +36,7 @@ public class ChatbotController {
     @GetMapping("/history")
     public ResponseEntity<List<ChatbotResponse>> getHistory(@AuthenticationPrincipal UserDetails userDetails) {
         Long userId = getUserId(userDetails);
-        return ResponseEntity.ok(chatbotService.getHistory(userId));
+        return ResponseEntity.ok(chatbotService.getHistory(userId)); // limit to last 10 messages
     }
 
     private Long getUserId(UserDetails userDetails) {

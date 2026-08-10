@@ -101,7 +101,7 @@ public class AiService {
             return rawText.trim();
 
         } catch (Exception e) {
-            log.error("Unexpected error generating insight: {}", e.getMessage());
+            log.error("Unexpected error generating insight: {} (class: {})", e.getMessage(), e.getClass().getName());
             return getInsightFallback();
         }
     }

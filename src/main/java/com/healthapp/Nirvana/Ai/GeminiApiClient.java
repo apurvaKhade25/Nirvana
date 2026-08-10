@@ -31,7 +31,7 @@ public class GeminiApiClient {
                 + geminiModel + ":generateContent?key=" + apiKey;
     }
 
-    @Retryable(retryFor = {HttpClientErrorException.class}, maxAttempts = 3, backoff = @Backoff(delay = 2000, multiplier = 2.0))
+    @Retryable(retryFor = {Exception.class}, maxAttempts = 3, backoff = @Backoff(delay = 2000, multiplier = 2.0))
     public GeminiResponse callGeminiApi(String prompt) {
         log.info("Calling Gemini API with prompt: {}", prompt);
         GeminiRequest requestBody = new GeminiRequest(prompt);
@@ -52,7 +52,8 @@ public class GeminiApiClient {
 
     @Recover
     public GeminiResponse recoverFromGeminiApiFailure(HttpClientErrorException e, String prompt) {
-        log.error("Gemini API call failed after retries: {}", e.getMessage());
+        log.error("Geminin api failed after retries: {} (cause: {}) (class: {})", e.getMessage(), e.getCause(),
+                e.getClass().getName());
         GeminiResponse fallback = new GeminiResponse();
         fallback.setCandidates(null);
         return fallback;

@@ -12,4 +12,5 @@ public interface JournalRepo extends JpaRepository<JournalEntry,Long> {
 
     Optional <JournalEntry> findByIdAndUserId(Long id, Long userId);
 
+    List<JournalEntry> findByUserIdOrderByCreatedAtDesc(Long userId);
 }

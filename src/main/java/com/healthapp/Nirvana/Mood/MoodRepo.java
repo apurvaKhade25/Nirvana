@@ -14,4 +14,6 @@ public interface MoodRepo extends JpaRepository<MoodEntry,Long> {
     );
 
 
+    List<MoodEntry> findByUserIdOrderByLoggedAtDesc(Long userId);
+
 }

@@ -36,14 +36,14 @@ public class ChatbotService {
         List<ChatEntry> history = chatRepo.findTop10ByUserIdOrderBySentAtDesc(userId);
 
         //get mood summary
-        List<MoodEntry> moods = moodRepo.findByUserIdOrderByLoggedAtAsc(userId);
+        List<MoodEntry> moods = moodRepo.findByUserIdOrderByLoggedAtDesc(userId);
         double avg = moods.stream()
                 .mapToInt(MoodEntry::getMoodScore)
                 .average().orElse(0);
         String topMood = moods.isEmpty() ? "unknown" : moods.get(0).getMoodLabel();
 
         //get journal summary
-        List<JournalEntry> journalEntries = journalRepo.findByUserIdOrderByCreatedAtAsc(userId);
+        List<JournalEntry> journalEntries = journalRepo.findByUserIdOrderByCreatedAtDesc(userId);
         String recentJournal = journalEntries.isEmpty() ? "none" : journalEntries.get(0).getContent();
 
         //build ai context
@@ -113,7 +113,8 @@ public class ChatbotService {
 
     }
 
-    public List<ChatbotResponse> getHistory(Long userId) {
+    // history using datee
+    public List<ChatbotResponse> getHistory(Long userId, LocalDateTime from, LocalDateTime to) {
         List<ChatEntry> chats =
                 chatRepo.findTop10ByUserIdOrderBySentAtDesc(userId);
         return chats.stream().map(chat -> {
@@ -124,5 +125,18 @@ public class ChatbotService {
             return res;
         }).toList();
 
+    }
+
+    // get history without date
+    public List<ChatbotResponse> getHistory(Long userId) {
+        List<ChatEntry> chats =
+                chatRepo.findTop10ByUserIdOrderBySentAtDesc(userId);
+        return chats.stream().map(chat -> {
+            ChatbotResponse res = new ChatbotResponse();
+            res.setMessage(chat.getMessage());
+            res.setRole(chat.getRole());
+            res.setSentAt(chat.getSentAt());
+            return res;
+        }).toList();
     }
 }
