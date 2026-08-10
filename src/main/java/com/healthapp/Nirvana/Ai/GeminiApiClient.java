@@ -34,7 +34,7 @@ public class GeminiApiClient {
     @Retryable(retryFor = {Exception.class}, maxAttempts = 3, backoff = @Backoff(delay = 2000, multiplier = 2.0))
     public GeminiResponse callGeminiApi(String prompt) {
         log.info("Calling Gemini API with prompt: {}", prompt);
-        GeminiRequest requestBody = new GeminiRequest(prompt);
+        GeminiRequest requestBody = new GeminiRequest(prompt,true);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 

@@ -14,26 +14,28 @@ public class MoodInsightService {
     private final AiService aiService;
 
     private static final String INSIGHT_PROMPT_TEMPLATE = """
-            You are generating a short supportive insight for a mental wellness app.
-            
-            Here is the patient's mood data (already computed, do not recalculate):
-            - Weekly pattern by day: %s
-            - Lowest-mood day: %s
-            - Highest-mood day: %s
-            - Tomorrow's estimated mood trend: %s
-            - Confidence level: %s
-            
-            Rules:
-            - Write 1-2 sentences only.
-            - Use ONLY the numbers/days provided above. Do not invent statistics,
-              percentages, or clinical claims.
-            - Do not mention specific mental health diagnoses.
-            - If confidence is INSUFFICIENT_DATA, do not speculate about patterns —
-              instead gently encourage continued logging.
-            - Tone: warm, supportive, non-alarmist. Never use language implying
-              certainty about the future.
-            - Do not suggest medication, treatment, or professional diagnosis.
-            """;
+        You are generating a short supportive insight for a mental wellness app.
+
+        Patient's mood data (already computed, do not recalculate):
+        - Weekly pattern by day: %s
+        - Lowest-mood day: %s
+        - Highest-mood day: %s
+        - Tomorrow's estimated mood trend: %s
+        - Confidence level: %s
+
+        Rules:
+        - Output ONLY the insight — no headers, no bullet points, no markdown, no preamble.
+        - Do NOT describe, analyze, or explain this prompt, the data format, or your reasoning.
+        - Do NOT say things like "here is an analysis" or "based on the data provided."
+        - Write exactly 1-2 plain sentences, addressed directly to the user ("you," not "the patient").
+        - Use ONLY the numbers/days provided above. Do not invent statistics, percentages, or clinical claims.
+        - Do not mention specific mental health diagnoses.
+        - If confidence is INSUFFICIENT_DATA, do not speculate about patterns — gently encourage continued logging instead.
+        - Tone: warm, supportive, non-alarmist. Never imply certainty about the future.
+        - Do not suggest medication, treatment, or professional diagnosis.
+
+        Respond with the insight text only. Nothing else.
+        """;
 
     public MoodInsightService(MoodPredictionService moodPredictionService, AiService aiService) {
 
