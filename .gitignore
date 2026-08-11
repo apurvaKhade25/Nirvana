@@ -30,10 +30,12 @@ build/
 !**/src/test/**/build/
 
 ### application properties ###
-application.properties
+##application.properties
 application-local.properties
 
 ### VS Code ###
 .vscode/
 
 .DS_Store
+
+.env
